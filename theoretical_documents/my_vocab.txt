@@ -1,0 +1,3 @@
+Identifier -> Order not starting with #. Can be assigned to any number of other Orders and will be replaced by other Orders on encounter
+Instruction -> Compiler Instruction, Order starting with #. A Order that changes something in the CodeGenerator
+LiteralCode -> Order starting and ending with ". Contains assembly code which will be written to the Assembly File. In LiterCode Whitespaces are not ignored

@@ -1,0 +1,122 @@
+#enterOrderQueue "optimized_lib.qhs" #exitOrderQueue #include
+
+int bssInt ;
+
+int dataInt = "69" ;
+
+[ ".rodata" ] #setAssemblySection
+[ "db 'moin', 0xa" ] varFromDefineCode wordToGuess ;
+[ "equ $ - wordToGuess" ] varFromDefineCode wordLength ;
+
+/* functions */
+
+void PrintLine ( int char )
+{
+    [ char ! int.size ] println ;
+
+    return ;
+}
+
+void Print ( int char )
+{
+    [ char ! int.size ] print ;
+
+    return ;
+}
+
+int Hello2 ( int p1 , int p2 )
+{
+    int a = p1 ;
+    int b = p2 ;
+
+    [ a ! int.size ] println ;
+    [ b ! int.size ] println ;
+
+    return = p1 ;
+}
+
+void Hello ( int p1 , bool p2 , int p3 )
+{
+    int a = p3 ;
+    [ a ! int.size ] println ;
+
+    return ;
+}
+
+/* start */
+start
+{
+    [ wordToGuess wordLength ] rawPrint ;
+
+    [ printWord ]
+    [ [ wordToGuess wordLength ] rawPrint ] >> ;
+
+    printWord ;
+
+    int num = "65" + dataInt - dataInt ;
+    int num2 = "66" ;
+
+    PrintLine ( num ) ;
+
+    [ num2 ] = "67" + num2.size ;
+    [ num2 ] += "6" ;
+    [ num2 ] -= "6" + "1" ;
+    [ num2 ] -= "35" ;
+    [ num2 ] *= "2" ;
+    [ num2 ] += "1" * "5" - "4" ; /* num2 = 71 */
+    [ num2 ] -= "1" ;
+    [ num2 ] = num2 / "2" ;
+    [ num2 ] *= "2" ;
+
+    int add = "1" == "1" || "1" ;
+
+    [ num2 ] += add ;
+
+    PrintLine ( num2 ) ; /* G (71) */
+    
+    [ dataInt ! int.size ] rawPrint ;
+
+    Hello ( num2 , "1" , "69" ) ;
+
+    int returnInt = "0" ;
+    Hello2 ( num , num2 ) ;
+    [ returnInt ] = "eax" ;
+
+    PrintLine ( returnInt ) ;
+
+    int whileInt = "65" ;
+
+    [ "4" ]
+    while ( whileInt <= "70" )
+    {
+        Print ( whileInt ) ;
+        [ whileInt ] += "1" ;
+    }
+
+    Print ( "10" ) ; /* print newline */
+
+    bool ifBool = "1" ;
+
+    [ "1" ]
+    if ( ifBool )
+    {
+        PrintLine ( "65" ) ;
+    }
+
+    [ "1" ]
+    if ( ifBool == "0" )
+    {
+        PrintLine ( "66" ) ;
+    }
+    [ "1" ]
+    else
+    {
+        PrintLine ( "67" ) ;
+    }
+    
+
+    exit ;
+}
+
+
+

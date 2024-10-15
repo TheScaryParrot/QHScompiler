@@ -1,0 +1,34 @@
+{
+  "name": "qhs-vscode-extension",
+  "displayName": "QHS-vscode-extension",
+  "description": "Adds syntax highlights for QHS as a VScode extension",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.86.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "qhs",
+        "aliases": [
+          "QHS",
+          "qhs"
+        ],
+        "extensions": [
+          "qhs"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "qhs",
+        "scopeName": "source.qhs",
+        "path": "./syntaxes/qhs.tmLanguage.json"
+      }
+    ]
+  }
+}

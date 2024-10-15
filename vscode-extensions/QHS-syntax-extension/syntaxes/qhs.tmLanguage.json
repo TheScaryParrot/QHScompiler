@@ -1,0 +1,59 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "QHS",
+	"patterns": [
+		{
+			"include": "#compilerInstruction"
+		},
+		{
+			"include": "#directCode"
+		},
+		{
+			"name": "comment",
+			"begin": "\\B\\/\\*\\B",
+			"end": "\\B\\*\\/\\B"
+		},
+		{
+			"name": "entity",
+			"match": "\\B;\\B"
+		},
+		{
+			"name": "keyword.control",
+			"match": "\\B\\$\\B"
+		},
+		{
+			"include": "#identifier"
+		}
+	],
+	"repository": {
+		"compilerInstruction": {
+			"name": "compilerInstruction",
+			"patterns": [
+				{
+					"name": "keyword.control",
+					"match": "#[^\\s\"]*"
+				}
+			]
+		},
+		"directCode": {
+			"name": "directCode",
+			"patterns": [
+				{
+					"name": "string",
+					"begin": "\"",
+					"end": "\""
+				}
+			]
+		},
+		"identifier": {
+			"name": "identifier",
+			"patterns": [
+				{
+					"name": "variable",
+					"match": "[^\\s]+"
+				}
+			]
+		}
+	},
+	"scopeName": "source.qhs"
+}

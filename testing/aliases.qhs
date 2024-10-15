@@ -1,0 +1,26 @@
+#enterOrderQueue [ #orderEnqueue #enterOrderQueue #exitOrderQueue #assign
+#enterOrderQueue [ #exitOrderQueue #makeOrderQueueProof
+
+#enterOrderQueue ] #orderEnqueue #exitOrderQueue #exitOrderQueue #assign
+#enterOrderQueue ] #exitOrderQueue #makeOrderQueueProof
+
+#enterOrderQueue -> #assignToOne #exitOrderQueue #assign
+#enterOrderQueue >> #assign #exitOrderQueue #assign
+
+#enterOrderQueue /* #orderEnqueue #enterComment #exitOrderQueue #assign
+#enterOrderQueue /* #exitOrderQueue #makeOrderQueueProof
+#enterOrderQueue */ #orderEnqueue #exitComment #exitOrderQueue #assign
+#enterOrderQueue */ #exitOrderQueue #makeCommentProof
+#enterOrderQueue */ #exitOrderQueue #makeOrderQueueProof
+
+#enterOrderQueue ! #orderEnqueue #force #exitOrderQueue #assign
+#enterOrderQueue ! #exitOrderQueue #makeOrderQueueProof
+
+#enterOrderQueue ?! #orderEnqueue #lightForce #exitOrderQueue #assign
+#enterOrderQueue ?! #exitOrderQueue #makeOrderQueueProof
+
+#enterOrderQueue ; "
+" #clearOrderQueue #exitOrderQueue  #assign
+
+#enterOrderQueue \n "
+" #exitOrderQueue #assign

@@ -1,0 +1,948 @@
+#enterOrderQueue "aliases.qhs" #exitOrderQueue #include
+
+#enterOrderQueue lateArg>>
+    #enterComment result in #orderEnqueue #force in order queue #exitComment
+    #enterOrderQueue #orderEnqueue #orderEnqueue #orderEnqueue #force #deepFetch #exitOrderQueue #assign 
+#exitOrderQueue #assign
+#enterOrderQueue lateArg>> #exitOrderQueue #makeOrderQueueProof
+
+#enterComment ------------------ data handling ------------------ #exitComment
+#enterComment types #exitComment
+
+#enterOrderQueue int.size "4" #exitOrderQueue #assign
+#enterOrderQueue int #enterOrderQueue #force int.size #exitOrderQueue definition #exitOrderQueue #assign 
+
+#enterOrderQueue bool.size "1" #exitOrderQueue #assign
+#enterOrderQueue bool #enterOrderQueue #force bool.size #exitOrderQueue definition #exitOrderQueue #assign
+
+#enterOrderQueue void #enterOrderQueue "0" #exitOrderQueue definition #exitOrderQueue #assign
+
+#enterComment assembly stuff #exitComment
+#enterOrderQueue getSizeSpecifier #exitOrderQueue
+#enterOrderQueue
+    #orderFrontEnqueue size #assignToOne
+
+    #pushEnv
+
+    #enterOrderQueue 1 "byte" #exitOrderQueue #assign
+    #enterOrderQueue 2 "word" #exitOrderQueue #assign
+    #enterOrderQueue 4 "dword" #exitOrderQueue #assign
+    #enterOrderQueue 8 "qword" #exitOrderQueue #assign
+
+    #enterOrderQueue #orderEnqueue #force size #exitOrderQueue #literalToIdentifier
+
+    #popEnv
+
+#exitOrderQueue #assign
+
+#enterOrderQueue getRegisterA #exitOrderQueue
+#enterOrderQueue
+    #orderFrontEnqueue size #assignToOne
+
+    #pushEnv
+
+    #enterOrderQueue 1 "al" #exitOrderQueue #assign
+    #enterOrderQueue 2 "ax" #exitOrderQueue #assign
+    #enterOrderQueue 4 "eax" #exitOrderQueue #assign
+    #enterOrderQueue 8 "rax" #exitOrderQueue #assign
+
+    #enterOrderQueue #orderEnqueue #force size #exitOrderQueue #literalToIdentifier
+
+    #popEnv    
+
+#exitOrderQueue #assign
+
+#enterOrderQueue getRegisterB #exitOrderQueue
+#enterOrderQueue
+    #orderFrontEnqueue size #assignToOne
+
+    #pushEnv
+
+    #enterOrderQueue 1 "bl" #exitOrderQueue #assign
+    #enterOrderQueue 2 "bx" #exitOrderQueue #assign
+    #enterOrderQueue 4 "ebx" #exitOrderQueue #assign
+    #enterOrderQueue 8 "rbx" #exitOrderQueue #assign
+
+    #enterOrderQueue #orderEnqueue #force size #exitOrderQueue #literalToIdentifier
+
+    #popEnv    
+
+#exitOrderQueue #assign
+
+#enterOrderQueue getRegisterD #exitOrderQueue
+#enterOrderQueue
+    #orderFrontEnqueue size #assignToOne
+
+    #pushEnv
+
+    #enterOrderQueue 1 "dl" #exitOrderQueue #assign
+    #enterOrderQueue 2 "dx" #exitOrderQueue #assign
+    #enterOrderQueue 4 "edx" #exitOrderQueue #assign
+    #enterOrderQueue 8 "rdx" #exitOrderQueue #assign
+
+    #enterOrderQueue #orderEnqueue #force size #exitOrderQueue #literalToIdentifier
+
+    #popEnv    
+
+#exitOrderQueue #assign
+
+#enterOrderQueue getDefineSpecifier #exitOrderQueue
+#enterOrderQueue
+    #orderFrontEnqueue size #assignToOne
+
+    #pushEnv
+
+    #enterOrderQueue 1 "db" #exitOrderQueue #assign
+    #enterOrderQueue 2 "dw" #exitOrderQueue #assign
+    #enterOrderQueue 4 "dd" #exitOrderQueue #assign
+    #enterOrderQueue 8 "dq" #exitOrderQueue #assign
+
+    #enterOrderQueue #orderEnqueue #force size #exitOrderQueue #literalToIdentifier
+
+    #popEnv
+
+#exitOrderQueue #assign
+
+#enterComment ------------------ definitions ------------------ #exitComment
+
+#enterOrderQueue globalDefinition #exitOrderQueue
+#enterOrderQueue
+    #orderFrontEnqueue size #assignToOne
+    #enterOrderQueue name #exitOrderQueue lateArg>>
+
+    #pushEnv
+
+    #enterOrderQueue =
+        #popEnv
+
+        #enterOrderQueue #orderEnqueue #force size #exitOrderQueue
+        #enterOrderQueue #orderEnqueue #force name #exitOrderQueue
+        #enterOrderQueue #lightForce #deepFetch #exitOrderQueue
+        dataVar
+    #exitOrderQueue #assign
+
+    #enterOrderQueue ;
+        #popEnv
+
+        #enterOrderQueue #orderEnqueue #force size #exitOrderQueue
+        #enterOrderQueue #orderEnqueue #force name #exitOrderQueue
+
+        bssVar
+    #exitOrderQueue #assign
+    
+    #enterOrderQueue (
+        #popEnv
+        
+        #orderFrontEnqueue ".text" #setAssemblySection
+
+        #pushEnv
+
+        #enterOrderQueue _functionDefinitionOrderQueue #exitOrderQueue
+        #enterOrderQueue #orderEnqueue #force name #exitOrderQueue
+        #assign
+        
+        initParameterDefinition
+
+        #enterOrderQueue ) #exitOrderQueue
+        #enterOrderQueue
+            #enterComment define function in function scope for recursion #exitComment
+            #enterComment definition for localScope happens in funcBodyEnd #exitComment
+            #enterOrderQueue #lightForce _functionDefinitionOrderQueue #exitOrderQueue
+            defineFuncIdentifier
+
+            #enterOrderQueue #orderEnqueue #force size #exitOrderQueue
+            #enterOrderQueue #orderEnqueue #force name #exitOrderQueue
+            funcBody
+        #exitOrderQueue #assign
+
+        #enterOrderQueue , #exitOrderQueue #assign #enterComment , = nothing #exitComment
+    #exitOrderQueue #assign
+
+#exitOrderQueue #assign
+
+#enterComment variables  #exitComment
+#enterOrderQueue varFromDefineCode #exitOrderQueue
+#enterOrderQueue
+    #orderFrontEnqueue defineCode #assignToOne
+    
+    #enterOrderQueue name #exitOrderQueue lateArg>>
+
+    #enterComment assigns what is stored in name to the direct code of what is stored in name #exitComment
+    #enterOrderQueue #orderEnqueue #force name #orderEnqueue #force name #orderEnqueue #force #orderToLiteralCode #exitOrderQueue #assign
+
+    name ": " defineCode "
+" 
+#exitOrderQueue #assign
+
+#enterOrderQueue roDataVar #exitOrderQueue
+#enterOrderQueue
+    #enterOrderQueue size #exitOrderQueue lateArg>>
+    #enterOrderQueue name #exitOrderQueue lateArg>>
+    #enterOrderQueue value #exitOrderQueue lateArg>>
+
+    #enterOrderQueue defineSpecifier #enterOrderQueue #orderEnqueue #force size #exitOrderQueue getDefineSpecifier #exitOrderQueue  #assign
+
+    #enterComment assigns whast is stored in name to the direct code of what is stored in name #exitComment
+    #enterOrderQueue #orderEnqueue #force name #orderEnqueue #force name #orderEnqueue #force #orderToLiteralCode #exitOrderQueue #assign
+
+    name ": " defineSpecifier " " value "
+"
+#exitOrderQueue #assign
+
+#enterOrderQueue dataVar #exitOrderQueue
+#enterOrderQueue
+    #orderFrontEnqueue ".data" #setAssemblySection
+
+    #orderFrontEnqueue size #assignToOne
+    #orderFrontEnqueue name #assignToOne
+    #orderFrontEnqueue value #assignToOne
+
+    #enterOrderQueue defineSpecifier #enterOrderQueue #orderEnqueue #force size #exitOrderQueue getDefineSpecifier #exitOrderQueue #assign
+
+    #enterComment assigns whast is stored in name to the direct code of what is stored in name #exitComment
+    #enterOrderQueue #orderEnqueue #force name #orderEnqueue #force name #orderEnqueue #force #orderToLiteralCode #exitOrderQueue #assign
+
+    name ": " defineSpecifier " " value "
+"
+#exitOrderQueue #assign
+
+#enterOrderQueue bssVar #exitOrderQueue
+#enterOrderQueue
+    #orderFrontEnqueue ".bss" #setAssemblySection
+
+    #orderFrontEnqueue size #assignToOne
+    #orderFrontEnqueue name #assignToOne
+
+    #enterComment assigns what is stored in name to the direct code of what is stored in name #exitComment
+    #enterOrderQueue #orderEnqueue #force name #orderEnqueue #force name #orderEnqueue #force #orderToLiteralCode #exitOrderQueue #assign
+
+    name ": resb " size "
+"
+
+#exitOrderQueue #assign
+
+#enterOrderQueue localVar #exitOrderQueue
+#enterOrderQueue
+    #orderFrontEnqueue size #assignToOne
+    #enterOrderQueue name #exitOrderQueue lateArg>>
+
+    #enterOrderQueue sizeSpecifier #enterOrderQueue #orderEnqueue #force size #exitOrderQueue getSizeSpecifier #exitOrderQueue #assign
+
+    #enterOrderQueue "rbpOffset" #orderEnqueue #force size #exitOrderQueue #changeIntVar
+    #enterOrderQueue "rbpOffset" currentRBPoffset #orderEnqueue #force #getIntVar #exitOrderQueue #assign
+
+    #enterComment #force name = sizeSpecifier #enterOrderQueuerbp-offset#exitOrderQueue #exitComment
+    #enterOrderQueue #lightForce size #lightForce name #lightForce sizeSpecifier " [rbp-" #lightForce currentRBPoffset "]" #exitOrderQueue 
+    defineVarIdentifier
+
+    "sub rsp, " size "
+"
+
+    #pushEnv
+    
+    #enterOrderQueue =
+        #popEnv
+        #enterOrderQueue #orderEnqueue #force size #exitOrderQueue
+        #enterOrderQueue #lightForce #deepFetch #exitOrderQueue
+        exprInit
+
+        #enterOrderQueue ; #exitOrderQueue
+        #enterOrderQueue
+            #popEnv
+
+            #enterOrderQueue registerA #enterOrderQueue #orderEnqueue #force size #exitOrderQueue getRegisterA #exitOrderQueue #assign
+            "mov " name ", " registerA "
+"
+        #exitOrderQueue #assign 
+    #exitOrderQueue #assign
+
+    #enterOrderQueue ;
+        #popEnv
+        "
+"
+    #exitOrderQueue #assign 
+#exitOrderQueue #assign
+
+#enterOrderQueue assign #exitOrderQueue
+#enterOrderQueue
+    #orderFrontEnqueue size #assignToOne
+    #orderFrontEnqueue location #assignToOne
+    #orderFrontEnqueue value #assign
+
+    #enterOrderQueue register #enterOrderQueue #orderEnqueue #force size #exitOrderQueue getRegisterA #exitOrderQueue #assign
+
+    "mov " register ", " value "
+"
+    "mov " location ", " register "
+"
+#exitOrderQueue #assign
+
+#enterComment return on OrderQueue #exitComment
+#enterOrderQueue varSize #exitOrderQueue
+#enterOrderQueue
+    #orderFrontEnqueue variabel #assignToOne
+
+    #enterOrderQueue #lightForce variabel #lightForce #orderToLiteralCode ".size" #lightForce #literalCombine #lightForce #literalToIdentifier #lightForce #executeOrderTop #exitOrderQueue
+#exitOrderQueue #assign
+
+#enterComment expects Queue top as size, rest the identifier Assign for the identifier #exitComment
+#enterOrderQueue defineVarIdentifier #exitOrderQueue
+#enterOrderQueue
+    #orderFrontEnqueue size #assignToOne
+    #orderFrontEnqueue identifier #assignToOne
+    #orderFrontEnqueue location #assign
+    
+    #enterOrderQueue #lightForce identifier #lightForce location #exitOrderQueue #assign
+
+    #enterComment IDENTIFIER.size = size #exitComment
+    #enterOrderQueue #lightForce identifier #lightForce #orderToLiteralCode ".size" #lightForce #literalCombine #lightForce #literalToIdentifier #lightForce size #exitOrderQueue #assign
+#exitOrderQueue #assign
+
+#enterComment defintion current is globalDefinition #exitComment
+#enterOrderQueue definition globalDefinition #exitOrderQueue #assign
+
+#enterComment functions #exitComment
+#enterOrderQueue resetRBPoffset #enterOrderQueue "rbpOffset" "0" #exitOrderQueue #setIntVar #exitOrderQueue #assign
+
+#enterOrderQueue start #exitOrderQueue
+#enterOrderQueue
+    #pushEnv
+    #enterOrderQueue definition localVar #exitOrderQueue #assign
+    #enterOrderQueue { #exitOrderQueue #assign #enterComment { to none #exitComment
+    #enterOrderQueue } #popEnv #exitOrderQueue #assign #enterComment } to end of function body #exitComment
+
+    #enterOrderQueue ".text" #exitOrderQueue #setAssemblySection 
+    resetRBPoffset "
+"
+    "global _start" "
+"
+    "_start:" "
+"
+    "mov rbp, rsp" "
+"
+#exitOrderQueue #assign
+
+#enterOrderQueue defineFuncIdentifier #exitOrderQueue
+#enterOrderQueue
+    #orderFrontEnqueue name #assignToOne
+    #orderFrontEnqueue parameterSizes #assign
+
+    #enterOrderQueue "paramSize" #lightForce #getIntVar #exitOrderQueue #orderFrontEnqueue paramSize #assign
+
+    #clearOrderQueue #enterComment it should be empty but you never know #exitComment
+
+    #enterComment funcLabel = name as literalCode #exitComment
+    #enterOrderQueue #orderEnqueue #force name #orderEnqueue #force #orderToLiteralCode #exitOrderQueue #orderFrontEnqueue funcLabel #assign 
+
+    #enterComment name() = call name generated from funcCall identifier #exitComment
+    #enterOrderQueue #orderEnqueue #force name
+        #enterOrderQueue #orderEnqueue #force funcLabel #orderEnqueue #force paramSize #orderEnqueue #force parameterSizes #exitOrderQueue 
+        funcCall
+    #exitOrderQueue #assign
+#exitOrderQueue #assign 
+
+#enterOrderQueue funcBody #exitOrderQueue
+#enterOrderQueue
+    #orderFrontEnqueue size #assignToOne
+    #orderFrontEnqueue name #assignToOne 
+
+    #enterOrderQueue return
+        #enterOrderQueue #orderEnqueue #force size #exitOrderQueue returnBlueprint
+    #exitOrderQueue #assign
+
+    #enterOrderQueue #orderEnqueue #force name #orderEnqueue #force #orderToLiteralCode #exitOrderQueue #orderFrontEnqueue funcLabel #assign 
+
+    #enterOrderQueue definition localVar #exitOrderQueue #assign
+    #enterOrderQueue { #exitOrderQueue #assign #enterComment { = none #exitComment
+    #enterOrderQueue } funcBodyEnd #exitOrderQueue #assign #enterComment } = end of function body #exitComment
+
+    #enterOrderQueue ".text" #exitOrderQueue #setAssemblySection
+    resetRBPoffset
+
+    funcLabel ":" "
+"
+    "mov rbp, rsp" "
+"
+#exitOrderQueue #assign
+
+#enterOrderQueue funcBodyEnd #exitOrderQueue
+#enterOrderQueue
+    #enterOrderQueue #lightForce _functionDefinitionOrderQueue #exitOrderQueue
+
+    #popEnv
+
+    defineFuncIdentifier
+#exitOrderQueue #assign
+
+#enterOrderQueue initParameterDefinition #exitOrderQueue
+#enterOrderQueue
+    #enterComment definitions now are parameterDefinition #exitComment
+    #enterOrderQueue definition parameterDefinition #exitOrderQueue #assign
+
+    #enterComment rbpOffset = 16 #exitComment
+    #enterOrderQueue "rbpOffset" "16 "#exitOrderQueue #setIntVar
+
+    #enterComment paramSize = 0 #exitComment
+    #enterOrderQueue "paramSize" "0" #exitOrderQueue #setIntVar
+#exitOrderQueue #assign
+
+#enterOrderQueue parameterDefinition #exitOrderQueue
+#enterOrderQueue
+    #orderFrontEnqueue size #assignToOne
+    #enterOrderQueue name #exitOrderQueue lateArg>>
+
+    #enterOrderQueue sizeSpecifier #enterOrderQueue #orderEnqueue #force size #exitOrderQueue getSizeSpecifier #exitOrderQueue #assign
+
+    #enterComment first get RBPoffset then rbpOffset += size #exitComment
+    #enterOrderQueue "rbpOffset" currentRBPoffset #orderEnqueue #force #getIntVar #exitOrderQueue #assign
+    #enterOrderQueue "rbpOffset" #orderEnqueue #force size #exitOrderQueue #changeIntVar 
+
+    #enterComment paramSize += size #exitComment
+    #enterOrderQueue "paramSize" #orderEnqueue #force size #exitOrderQueue #changeIntVar 
+
+    #enterComment parameter is at rbp+offset #exitComment
+    #enterOrderQueue newRBPvar "rbp+" #orderEnqueue #force currentRBPoffset #exitOrderQueue #assign
+    #enterOrderQueue address "[" #orderEnqueue #force newRBPvar "]" #exitOrderQueue #assign
+
+    "sub rsp, " size "
+"
+
+    #enterOrderQueue #lightForce size #lightForce name #lightForce sizeSpecifier " [rbp+" #lightForce currentRBPoffset "]" #exitOrderQueue
+    defineVarIdentifier
+
+    #enterComment _functionDefinitionOrderQueue += size #exitComment
+    #enterOrderQueue _functionDefinitionOrderQueue #orderEnqueue #force _functionDefinitionOrderQueue #orderEnqueue #force size #exitOrderQueue #assign
+#exitOrderQueue #assign
+
+#enterComment call with with arguments #exitComment
+#enterOrderQueue funcCall #exitOrderQueue
+#enterOrderQueue
+    #pushEnv
+
+    #orderFrontEnqueue funcLabel #assignToOne
+    #enterComment combined size of all arguments #exitComment
+    #orderFrontEnqueue argSize #assignToOne
+
+    #orderFrontEnqueue argSizes #assign
+
+    #enterOrderQueue ()
+        #popEnv
+        #enterOrderQueue #orderEnqueue #force funcLabel #exitOrderQueue literalCall
+    #exitOrderQueue #assign
+
+    #enterOrderQueue )
+        #popEnv
+        #enterOrderQueue #orderEnqueue #force funcLabel #orderEnqueue #force argSize #exitOrderQueue literalCall
+    #exitOrderQueue #assign
+
+    #enterOrderQueue (
+        #enterOrderQueue #lightForce argSize #exitOrderQueue
+        initArguments
+
+        #enterComment size = first order stored in argSizes #exitComment
+        #enterOrderQueue size #lightForce argSizes #exitOrderQueue #assignToOne
+        #orderFrontEnqueue argSizes #assign
+
+        #enterComment argument need to be last instruction as otherwise the expr call in argument would get something from this #exitComment
+        #enterOrderQueue #lightForce size #exitOrderQueue argument
+    #exitOrderQueue #assign
+
+    #enterOrderQueue ,
+        #enterOrderQueue size #lightForce argSizes #exitOrderQueue #assignToOne
+        #orderFrontEnqueue argSizes #assign
+
+        #enterComment argument need to be last instruction as otherwise the expr call in argument would get something from this #exitComment
+        #enterOrderQueue #lightForce size #exitOrderQueue argument
+    #exitOrderQueue #assign
+#exitOrderQueue #assign
+
+#enterComment just the call assembly code #exitComment
+#enterOrderQueue literalCall #exitOrderQueue
+#enterOrderQueue
+    #orderFrontEnqueue funcLabel #assignToOne 
+    #orderFrontEnqueue argSize #assignToOne
+
+    "push rbp" "
+"
+    "call " funcLabel "
+"
+    "pop rbp" "
+"
+    "add rsp, " argSize "
+"
+#exitOrderQueue #assign
+
+#enterOrderQueue initArguments #exitOrderQueue
+#enterOrderQueue
+    #orderFrontEnqueue argSize #assignToOne
+
+    #enterOrderQueue "rbpOffset" currentRBPoffset #orderEnqueue #force #getIntVar #exitOrderQueue #assign
+    #enterOrderQueue "argOffset" #orderEnqueue #force currentRBPoffset #exitOrderQueue #setIntVar
+    #enterOrderQueue "argOffset" #orderEnqueue #force argSize #exitOrderQueue #changeIntVar
+
+    "sub rsp, " argSize "
+"
+#exitOrderQueue #assign
+
+#enterOrderQueue argument #exitOrderQueue
+#enterOrderQueue
+    #orderFrontEnqueue size #assignToOne
+    #enterOrderQueue value #lightForce #deepFetch #exitOrderQueue #assign 
+
+    #enterOrderQueue sizeSpecifier #enterOrderQueue #orderEnqueue #force size #exitOrderQueue getSizeSpecifier #exitOrderQueue #assign
+
+    #enterComment currentArgoffset = argOffset var #exitComment
+    #enterOrderQueue "argOffset" currentArgOffset #lightForce #getIntVar #exitOrderQueue #assign
+    #enterComment argument is at rbp-offset #exitComment
+    #enterOrderQueue newLocation #lightForce sizeSpecifier " [rbp-" #lightForce currentArgOffset "]" #exitOrderQueue #assign
+
+    #enterComment change arg offset, which was set in initArguments #exitComment
+    #enterComment changes argOffset by -size #exitComment
+    #enterOrderQueue "-" #lightForce size #lightForce #literalCombine #exitOrderQueue 
+    #orderFrontEnqueue "argOffset" #changeIntVar
+
+    #enterOrderQueue #lightForce size newLocation #lightForce value #exitOrderQueue assign
+#exitOrderQueue #assign
+
+#enterComment return but it needs a argument, return is defined as #enterOrderQueue "size" #exitOrderQueue returnBlueprint #exitComment
+#enterOrderQueue returnBlueprint #exitOrderQueue
+#enterOrderQueue
+    #orderFrontEnqueue size #assignToOne
+
+    #pushEnv
+
+    #enterOrderQueue =
+        #popEnv
+
+        #enterComment clear rax as expr will write partially over it. eg al #exitComment
+        "xor rax, rax" "
+"
+        #enterOrderQueue #lightForce size #exitOrderQueue
+        #enterOrderQueue #lightForce #deepFetch #exitOrderQueue
+        exprInit
+
+        #enterComment redefinition as oly one was lost by #popEnv #exitComment
+        #enterOrderQueue ; #exitOrderQueue
+        #enterOrderQueue
+            #popEnv
+
+            "mov rsp, rbp" "
+"
+            "ret" "
+"
+        #exitOrderQueue #assign
+    #exitOrderQueue #assign
+
+    #enterOrderQueue ;
+        #popEnv
+
+        "mov rsp, rbp" "
+"
+        "ret" "
+"
+    #exitOrderQueue #assign
+#exitOrderQueue #assign
+
+#enterComment ------------------ expressions ------------------ #exitComment
+
+#enterOrderQueue exprInit #exitOrderQueue
+#enterOrderQueue
+    #pushEnv
+    #orderFrontEnqueue size #assignToOne
+    #orderFrontEnqueue first #assign
+
+    #enterOrderQueue sizeSpecifier #enterOrderQueue #lightForce size #exitOrderQueue getSizeSpecifier #exitOrderQueue #assign
+
+    #enterOrderQueue registerA #enterOrderQueue #lightForce size #exitOrderQueue getRegisterA #exitOrderQueue #assign
+
+    #enterOrderQueue registerB #enterOrderQueue #lightForce size #exitOrderQueue getRegisterB #exitOrderQueue #assign
+
+    #enterOrderQueue registerD #enterOrderQueue #lightForce size #exitOrderQueue getRegisterD #exitOrderQueue #assign
+
+    "mov " registerA ", " first "
+"
+
+    #enterOrderQueue +
+        "add " registerA ", " #deepFetch "
+"
+    #exitOrderQueue #assign
+
+    #enterOrderQueue -
+        "sub " registerA ", " #deepFetch "
+"
+    #exitOrderQueue #assign
+
+    #enterOrderQueue *
+        "mov " registerD ", " #deepFetch "
+"
+        "mul " registerD "
+"
+    #exitOrderQueue #assign
+
+    #enterOrderQueue /
+        "mov " registerB ", " #deepFetch "
+"
+        "xor rdx, rdx" "
+"
+        "div " registerB "
+"
+    #exitOrderQueue #assign
+
+    #enterOrderQueue ==
+        "cmp " registerA ", " #deepFetch "
+"
+        "sete dl" "
+"
+        "xor rax, rax" "
+"
+        "mov al, dl" "
+"
+    #exitOrderQueue #assign
+
+    #enterOrderQueue !=
+        "cmp " registerA ", " #deepFetch "
+"
+        "setne dl" "
+"
+        "xor rax, rax" "
+"
+        "mov al, dl" "
+"
+    #exitOrderQueue #assign
+
+    #enterOrderQueue <
+        "cmp " registerA ", " #deepFetch "
+"
+        "setl dl" "
+"
+        "xor rax, rax" "
+"
+        "mov al, dl" "
+"
+    #exitOrderQueue #assign
+
+    #enterOrderQueue <=
+        "cmp " registerA ", " #deepFetch "
+"
+        "setle dl" "
+"
+        "xor rax, rax" "
+"
+        "mov al, dl" "
+"
+    #exitOrderQueue #assign
+
+    #enterOrderQueue >
+        "cmp " registerA ", " #deepFetch "
+"
+        "setg dl" "
+"
+        "xor rax, rax" "
+"
+        "mov al, dl" "
+"
+    #exitOrderQueue #assign
+
+    #enterOrderQueue >=
+        "cmp " registerA ", " #deepFetch "
+"
+        "setge dl" "
+"
+        "xor rax, rax" "
+"
+        "mov al, dl" "
+"
+    #exitOrderQueue #assign
+
+    #enterOrderQueue &&
+        "and " registerA ", " #deepFetch "
+"
+    #exitOrderQueue #assign
+
+    #enterOrderQueue ||
+        "or " registerA ", " #deepFetch "
+"
+    #exitOrderQueue #assign
+#exitOrderQueue #assign
+
+#enterOrderQueue = #exitOrderQueue
+#enterOrderQueue
+    #orderFrontEnqueue var #assignToOne
+    #enterComment size = var.size #exitComment
+    #enterOrderQueue #lightForce var #exitOrderQueue varSize #orderFrontEnqueue size #assign
+
+    #enterOrderQueue #lightForce size #lightForce #deepFetch #exitOrderQueue
+    exprInit
+
+    #enterOrderQueue ;
+        #popEnv
+        #enterOrderQueue registerA #enterOrderQueue #orderEnqueue #force size #exitOrderQueue getRegisterA #exitOrderQueue #assign
+        "mov " var ", " registerA "
+"
+    #exitOrderQueue #assign
+#exitOrderQueue #assign
+
+#enterOrderQueue += #exitOrderQueue
+#enterOrderQueue
+    #orderFrontEnqueue var #assignToOne
+    #enterComment size = var.size #exitComment
+    #enterOrderQueue #lightForce var #exitOrderQueue varSize #orderFrontEnqueue size #assign
+
+    #enterOrderQueue #lightForce size #lightForce #deepFetch #exitOrderQueue
+    exprInit
+
+    #enterOrderQueue ;
+        #popEnv
+        #enterOrderQueue registerA #enterOrderQueue #orderEnqueue #force size #exitOrderQueue getRegisterA #exitOrderQueue #assign
+
+        "add " var ", " registerA "
+"
+    #exitOrderQueue #assign
+#exitOrderQueue #assign
+
+#enterOrderQueue -= #exitOrderQueue
+#enterOrderQueue
+    #orderFrontEnqueue var #assignToOne
+    #enterComment size = var.size #exitComment
+    #enterOrderQueue #lightForce var #exitOrderQueue varSize #orderFrontEnqueue size #assign
+
+    #enterOrderQueue #lightForce size #lightForce #deepFetch #exitOrderQueue
+    exprInit
+
+    #enterOrderQueue ;
+        #popEnv
+        #enterOrderQueue registerA #enterOrderQueue #orderEnqueue #force size #exitOrderQueue getRegisterA #exitOrderQueue #assign
+
+        "sub " var ", " registerA "
+"
+    #exitOrderQueue #assign
+#exitOrderQueue #assign
+
+#enterOrderQueue *= #exitOrderQueue
+#enterOrderQueue
+    #orderFrontEnqueue var #assignToOne
+    #enterComment size = var.size #exitComment
+    #enterOrderQueue #lightForce var #exitOrderQueue varSize #orderFrontEnqueue size #assign
+
+    #enterOrderQueue #lightForce size #lightForce #deepFetch #exitOrderQueue
+    exprInit
+
+    #enterOrderQueue ;
+        #popEnv
+        #enterOrderQueue registerA #enterOrderQueue #orderEnqueue #force size #exitOrderQueue getRegisterA #exitOrderQueue #assign
+        #enterOrderQueue registerD #enterOrderQueue #orderEnqueue #force size #exitOrderQueue getRegisterD #exitOrderQueue #assign
+
+        "mov " registerD ", " registerA "
+"
+        "mov " registerA ", " var "
+"
+        "mul " registerD "
+"
+        "mov " var ", " registerA "
+"
+    #exitOrderQueue #assign
+#exitOrderQueue #assign
+
+#enterOrderQueue /= #exitOrderQueue
+#enterOrderQueue
+    #orderFrontEnqueue var #assignToOne
+    #enterComment size = var.size #exitComment
+    #enterOrderQueue #lightForce var #exitOrderQueue varSize #orderFrontEnqueue size #assign
+
+    #enterOrderQueue #lightForce size #lightForce #deepFetch #exitOrderQueue
+    exprInit
+
+    #enterOrderQueue ;
+        #popEnv
+        #enterOrderQueue registerA #enterOrderQueue #orderEnqueue #force size #exitOrderQueue getRegisterA #exitOrderQueue #assign
+        #enterOrderQueue registerB #enterOrderQueue #orderEnqueue #force size #exitOrderQueue getRegisterB #exitOrderQueue #assign
+
+        "mov " registerB ", " registerA "
+"
+        "xor rdx, rdx" "
+"
+        "mov " registerA ", " var "
+"
+        "div " registerB "
+"
+        "mov " var ", " registerA "
+"
+    #exitOrderQueue #assign
+#exitOrderQueue #assign
+
+#enterComment ------------------ constrol flow ------------------ #exitComment
+
+#enterOrderQueue "currentJumpLabel" "0" #exitOrderQueue #setIntVar
+
+#enterComment returns to order queue #exitComment
+#enterOrderQueue newJumpLabel #exitOrderQueue
+#enterOrderQueue
+    #enterOrderQueue "currentJumpLabel" "1" #exitOrderQueue #changeIntVar
+    #enterOrderQueue "currentJumpLabel" "JL" #lightForce #getIntVar #lightForce #literalCombine #exitOrderQueue
+#exitOrderQueue #assign
+
+#enterOrderQueue while #exitOrderQueue
+#enterOrderQueue
+    #orderFrontEnqueue size #assignToOne
+
+    newJumpLabel #orderFrontEnqueue startLabel #assign #enterComment startLabel = new jumplabel #exitComment
+    newJumpLabel #orderFrontEnqueue endLabel #assign #enterComment endLabel = new jumplabel #exitComment
+
+    #enterOrderQueue registerA #enterOrderQueue #orderEnqueue #force size #exitOrderQueue getRegisterA #exitOrderQueue #assign
+
+    startLabel ":" "
+"
+
+    #pushEnv
+
+    #enterOrderQueue (
+        #enterOrderQueue #orderEnqueue #force size #exitOrderQueue
+        #enterOrderQueue #lightForce #deepFetch #exitOrderQueue
+        exprInit
+    #exitOrderQueue #assign
+
+    #enterOrderQueue )
+        #popEnv
+        "test " registerA ", " registerA "
+"
+        "jz " endLabel "
+"
+    #exitOrderQueue #assign
+
+    #enterOrderQueue {
+        #enterComment { = none #exitComment
+    #exitOrderQueue #assign
+
+    #enterOrderQueue }
+        #popEnv
+        #enterComment } = end of while loop #exitComment
+        "jmp " startLabel "
+"
+        endLabel ":" "
+"
+    #exitOrderQueue #assign
+#exitOrderQueue #assign
+
+#enterOrderQueue if #exitOrderQueue
+#enterOrderQueue
+    #orderFrontEnqueue size #assignToOne
+
+    newJumpLabel #orderFrontEnqueue endLabel #assign #enterComment endLabel = new jumplabel #exitComment
+
+    #enterOrderQueue registerA #enterOrderQueue #orderEnqueue #force size #exitOrderQueue getRegisterA #exitOrderQueue #assign
+
+    #pushEnv
+
+    #enterOrderQueue (
+        #enterOrderQueue #orderEnqueue #force size #exitOrderQueue
+        #enterOrderQueue #lightForce #deepFetch #exitOrderQueue
+        exprInit
+    #exitOrderQueue #assign
+
+    #enterOrderQueue )
+        #popEnv
+        "test " registerA ", " registerA "
+"
+        "jz " endLabel "
+"
+    #exitOrderQueue #assign
+
+    #enterOrderQueue {
+        #enterComment { = none #exitComment
+    #exitOrderQueue #assign
+
+    #enterOrderQueue }
+        #popEnv
+        #enterComment } = end of if statement #exitComment
+        endLabel ":" "
+"
+    #exitOrderQueue #assign
+#exitOrderQueue #assign
+
+#enterOrderQueue else #exitOrderQueue
+#enterOrderQueue
+    #orderFrontEnqueue size #assignToOne
+
+    newJumpLabel #orderFrontEnqueue endLabel #assign #enterComment endLabel = new jumplabel #exitComment
+
+    #enterOrderQueue registerA #enterOrderQueue #orderEnqueue #force size #exitOrderQueue getRegisterA #exitOrderQueue #assign
+
+    #pushEnv
+
+    #enterComment expression result is still stored in registerA #exitComment
+    #enterComment jumps on if expression is true; therefore when the if was executed #exitComment
+    "test " registerA ", " registerA "
+"
+    "jnz " endLabel "
+"
+
+    #enterOrderQueue {
+        #enterComment { = none #exitComment
+    #exitOrderQueue #assign
+
+    #enterOrderQueue }
+        #popEnv
+        #enterComment } = end of else statement #exitComment
+        endLabel ":" "
+"
+    #exitOrderQueue #assign
+#exitOrderQueue #assign
+
+#enterComment ------------------ syscalls ------------------ #exitComment
+#enterOrderQueue exit #exitOrderQueue
+#enterOrderQueue
+    "mov rax, 60" "
+"
+    "mov rdi, 0" "
+"
+    "syscall" "
+"
+#exitOrderQueue #assign
+
+#enterOrderQueue rawPrint #exitOrderQueue
+#enterOrderQueue
+    #orderFrontEnqueue message #assignToOne
+    #orderFrontEnqueue messageLength #assignToOne 
+
+    "mov rax, 1" "
+"
+    "mov rdi, 1" "
+"
+    "mov rsi, " message "
+"
+    "mov rdx, " messageLength "
+"
+    "syscall" "
+"
+#exitOrderQueue #assign
+
+#enterOrderQueue print #exitOrderQueue
+#enterOrderQueue
+    #orderFrontEnqueue message #assignToOne
+    #orderFrontEnqueue length #assignToOne 
+
+    #enterOrderQueue register #enterOrderQueue #orderEnqueue #force length #exitOrderQueue getRegisterA #exitOrderQueue #assign
+
+    "sub rsp, " length "
+"
+    "mov " register ", " message "
+"
+    "mov [rsp], " register "
+"
+
+    #enterOrderQueue "rsp" length #exitOrderQueue rawPrint "
+"
+
+    "add rsp, " length "
+"
+#exitOrderQueue #assign
+
+#enterOrderQueue println #exitOrderQueue
+#enterOrderQueue
+    print "
+"
+
+    #enterOrderQueue "0xa" "1" #exitOrderQueue print "
+"
+
+#exitOrderQueue #assign
